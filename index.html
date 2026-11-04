@@ -83,32 +83,59 @@
 
 <script>
 
-const weather = {
-    city: "Torino",
-    condition: "Soleggiato",
-    temperature: 23,
-    rainProbability: 5,
-    wind: 9,
-    recommendation: "✅ Ottimo giorno per fare la lavatrice"
-};
+async function loadWeather() {
 
-document.getElementById("location").innerText =
-    "📍 " + weather.city + ", Italia";
+    try {
 
-document.getElementById("recommendation").innerText =
-    weather.recommendation;
+        const response = await fetch(
+            "https://api.open-meteo.com/v1/forecast?latitude=45.0703&longitude=7.6869&current=temperature_2m,wind_speed_10m&hourly=precipitation_probability&forecast_days=1"
+        );
 
-document.getElementById("condition").innerText =
-    "☀️ Meteo: " + weather.condition;
+        const data = await response.json();
 
-document.getElementById("temperature").innerText =
-    "🌡️ Temperatura: " + weather.temperature + "°C";
+        const weather = {
+            city: "Torino",
+            temperature: Math.round(data.current.temperature_2m),
+            wind: Math.round(data.current.wind_speed_10m),
+            rainProbability: data.hourly.precipitation_probability[0]
+        };
 
-document.getElementById("rain").innerText =
-    "🌧️ Probabilità pioggia: " + weather.rainProbability + "%";
+        let recommendation = "✅ Ottimo giorno per fare la lavatrice";
 
-document.getElementById("wind").innerText =
-    "💨 Vento: " + weather.wind + " km/h";
+        if (weather.rainProbability > 40) {
+            recommendation = "❌ Meglio aspettare: rischio pioggia elevato";
+        } else if (weather.wind > 30) {
+            recommendation = "⚠️ Giornata ventosa";
+        }
+
+        document.getElementById("location").innerText =
+            "📍 " + weather.city + ", Italia";
+
+        document.getElementById("recommendation").innerText =
+            recommendation;
+
+        document.getElementById("condition").innerText =
+            "🌤️ Dati meteo reali";
+
+        document.getElementById("temperature").innerText =
+            "🌡️ Temperatura: " + weather.temperature + "°C";
+
+        document.getElementById("rain").innerText =
+            "🌧️ Probabilità pioggia: " + weather.rainProbability + "%";
+
+        document.getElementById("wind").innerText =
+            "💨 Vento: " + weather.wind + " km/h";
+
+    } catch (error) {
+
+        document.getElementById("recommendation").innerText =
+            "❌ Errore nel recupero del meteo";
+
+        console.error(error);
+    }
+}
+
+loadWeather();
 
 </script>
 
