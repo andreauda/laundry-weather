@@ -65,25 +65,52 @@
     <div class="card">
         <h1>🧺 Laundry Weather</h1>
 
-        <div class="location">
-            📍 Torino, Italy
-        </div>
+        <div class="location" id="location"></div>
 
-        <div class="result">
-            ✅ Ottimo giorno per fare la lavatrice
-        </div>
+		<div class="result" id="recommendation"></div>
 
-        <div class="weather">
-            <p>☀️ Meteo: Soleggiato</p>
-            <p>🌡️ Temperatura: 23°C</p>
-            <p>🌧️ Probabilità pioggia: 5%</p>
-            <p>💨 Vento: 9 km/h</p>
-        </div>
+		<div class="weather">
+			<p id="condition"></p>
+			<p id="temperature"></p>
+			<p id="rain"></p>
+			<p id="wind"></p>
+		</div>
 
         <div class="footer">
             Versione MVP • Dati simulati
         </div>
     </div>
+
+<script>
+
+const weather = {
+    city: "Torino",
+    condition: "Soleggiato",
+    temperature: 23,
+    rainProbability: 5,
+    wind: 9,
+    recommendation: "✅ Ottimo giorno per fare la lavatrice"
+};
+
+document.getElementById("location").innerText =
+    "📍 " + weather.city + ", Italia";
+
+document.getElementById("recommendation").innerText =
+    weather.recommendation;
+
+document.getElementById("condition").innerText =
+    "☀️ Meteo: " + weather.condition;
+
+document.getElementById("temperature").innerText =
+    "🌡️ Temperatura: " + weather.temperature + "°C";
+
+document.getElementById("rain").innerText =
+    "🌧️ Probabilità pioggia: " + weather.rainProbability + "%";
+
+document.getElementById("wind").innerText =
+    "💨 Vento: " + weather.wind + " km/h";
+
+</script>
 
 </body>
 </html>
